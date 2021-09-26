@@ -11,7 +11,7 @@ const app = express();
 
 app.get("/v1/get_all_xbox", (req, res) => {
 
-  
+
   let xboxqueryparams = req.query.xbox
   let promises = []
   let xboxdata = []
@@ -32,26 +32,37 @@ app.get("/v1/get_all_xbox", (req, res) => {
       req_.data.push(livecache)
       promises.push(req_)
     }
-    Promise.all(promises.map(function (entity) {
-      return Promise.all(entity.data.map(function (item) {
+    Promise.allSettled(promises.map(function (entity) {
+      return Promise.allSettled(entity.data.map(function (item) {
         return item;
       }));
     })).then(function (data) {
-      for (d in data) {
-        console.log(data[d])
-        for (l in data[d]){
-          var url = new URL(data[d][l].config.url)
-          var foundIndex = xboxdata.findIndex(x => x.xbox == url.hostname);
-          console.log("PATHNAME!",url.pathname)
-          let formated_url = url.pathname.replace("/", "")
-          if(formated_url === "title/live/cache"){
-            formated_url = "live"
+      for (var i = 0, l = data.length; i < l; i++) {
+        for (k in data[i].value) {
+          console.log("kuken i value", data[i].value[k])
+          if (data[i].value[k].status == "rejected") {
+            console.log(data[i].value[k].reason.config.url)
+            var errorurl = new URL(data[i].value[k].reason.config.url)
+            let formated_url = errorurl.pathname.replace("/", "")
+            if (formated_url === "title/live/cache") {
+              formated_url = "live"
+            }
+            var foundIndex = xboxdata.findIndex(x => x.xbox == errorurl.hostname);
+            xboxdata[foundIndex].data[formated_url] = { 'error': 'not able to reach xbox' }
           }
-          xboxdata[foundIndex].data[formated_url] = data[d][l].data
+          if (data[i].value[k].status == "fulfilled") {
+            var url = new URL(data[i].value[k].value.config.url)
+            var foundIndex = xboxdata.findIndex(x => x.xbox == url.hostname);
+            let formated_url = url.pathname.replace("/", "")
+            if (formated_url === "title/live/cache") {
+              formated_url = "live"
+            }
+            xboxdata[foundIndex].data[formated_url] = data[i].value[k].value.data
+          }
         }
       }
       res.json(xboxdata)
-    }).catch(err => console.log(err));
+    })
   }
 });
 app.get("/system", (req, res) => {
