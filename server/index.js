@@ -10,11 +10,15 @@ const app = express();
 
 
 app.get("/v1/get_all_xbox", (req, res) => {
-
-
   let xboxqueryparams = req.query.xbox
   let promises = []
   let xboxdata = []
+  console.log(xboxqueryparams)
+  // if (!Array.isArray(xboxqueryparams)) {
+  //   console.log("balle")
+  //   xboxqueryparams = []
+  //   xboxqueryparams.push(req.query.xbox)
+  // }
   if (Array.isArray(xboxqueryparams)) {
     for (var i in req.query.xbox) {
       const xbox_ip = req.query.xbox[i]
@@ -23,6 +27,7 @@ app.get("/v1/get_all_xbox", (req, res) => {
       const smc = axios.get(`http://${xbox_ip}:9999/smc`);
       const temp = axios.get(`http://${xbox_ip}:9999/temperature`);
       const livecache = axios.get(`http://${xbox_ip}:9999/title/live/cache`);
+      const memory = axios.get(`http://${xbox_ip}:9999/memory`);
       const req_ = { 'xbox': xbox_ip, data: [] }
       xboxdata.push({ 'xbox': xbox_ip, data: {} })
       req_.data.push(sys)
@@ -30,6 +35,7 @@ app.get("/v1/get_all_xbox", (req, res) => {
       req_.data.push(smc)
       req_.data.push(temp)
       req_.data.push(livecache)
+      req_.data.push(memory)
       promises.push(req_)
     }
     Promise.allSettled(promises.map(function (entity) {
@@ -39,9 +45,7 @@ app.get("/v1/get_all_xbox", (req, res) => {
     })).then(function (data) {
       for (var i = 0, l = data.length; i < l; i++) {
         for (k in data[i].value) {
-          console.log("kuken i value", data[i].value[k])
           if (data[i].value[k].status == "rejected") {
-            console.log(data[i].value[k].reason.config.url)
             var errorurl = new URL(data[i].value[k].reason.config.url)
             let formated_url = errorurl.pathname.replace("/", "")
             if (formated_url === "title/live/cache") {
@@ -64,24 +68,6 @@ app.get("/v1/get_all_xbox", (req, res) => {
       res.json(xboxdata)
     })
   }
-});
-app.get("/system", (req, res) => {
-  console.log(req.query)
-  axios.get('http://192.168.1.215:9999/system').then(resp => {
-    console.log(resp.data)
-    res.json(resp.data)
-  }).catch(err => {
-    res.json({ 'Error': "Could not reach Xbox" })
-  })
-});
-app.get("/title/live/cache", (req, res) => {
-  console.log(req.query)
-  axios.get('http://192.168.1.215:9999/title/live/cache').then(resp => {
-    console.log(resp.data)
-    res.json(resp.data)
-  }).catch(err => {
-    res.json({ 'Error': "Could not reach Xbox" })
-  })
 });
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

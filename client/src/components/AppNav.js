@@ -25,9 +25,10 @@ const NavLink = ({ children }: { children: ReactNode }) => (
     px={2}
     py={1}
     rounded={'md'}
+    color="white"
     _hover={{
       textDecoration: 'none',
-      bg: useColorModeValue('#33e4b9', 'gray.700'),
+      bg: useColorModeValue('#107c10', 'gray.700'),
     }}
     href={'#'}>
     {children}
@@ -39,7 +40,7 @@ export default function AppNav() {
 
   return (
     <>
-      <Box bg={useColorModeValue('#33e4a8', '#33e4b9')} px={4}>
+      <Box bg={useColorModeValue('#107c10', '#107c10')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -49,7 +50,7 @@ export default function AppNav() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>Multidash360</Box>
+            <Box color="white">Multidash360</Box>
             <HStack
               as={'nav'}
               spacing={4}
@@ -59,31 +60,7 @@ export default function AppNav() {
               ))}
             </HStack>
           </HStack>
-          <Flex alignItems={'center'}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={'full'}
-                variant={'link'}
-                cursor={'pointer'}
-                minW={0}>
-                <Avatar
-                  size={'sm'}
-                  src={
-                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                  }
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
         </Flex>
-
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
