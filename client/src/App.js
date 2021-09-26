@@ -19,10 +19,9 @@ function App(props) {
   const queryParams = new URLSearchParams(history.location.search);
   useEffect(() => {
     console.log(queryParams.getAll('xbox'))
-    fetch(`/system/${history.location.search}`).then((res) => res.json()).then((data) => setData(prevState => ({ ...prevState, system: data })));
+    fetch(`/v1/get_all_xbox${history.location.search}`).then((res) => res.json()).then((data) => setData(data));
     const interval = setInterval(() => {
-      fetch(`/temperature/${history.location.search}`).then((res) => res.json()).then((data) => setData(prevState => ({ ...prevState, temperature: data })))
-      fetch("/title/live/cache").then((res) => res.json()).then((data) => setData(prevState => ({ ...prevState, title: data })))
+      fetch(`/v1/get_all_xbox${history.location.search}`).then((res) => res.json()).then((data) => setData(data))
     }, 5000)
     return () => clearInterval(interval);
   }, []);

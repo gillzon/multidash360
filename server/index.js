@@ -8,52 +8,51 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 
-app.get("/temperature", (req, res) => {
+
+app.get("/v1/get_all_xbox", (req, res) => {
+
+  
   let xboxqueryparams = req.query.xbox
   let promises = []
   let xboxdata = []
-  let xboxurls = ['temperature', 'smc', 'bandwidth', 'state', 'systemlink', 'system', 'systemlink/bandwidth']
   if (Array.isArray(xboxqueryparams)) {
-    console.log("hejsan")
     for (var i in req.query.xbox) {
-      console.log("faking", i)
       const xbox_ip = req.query.xbox[i]
-      xboxdata[i] = { 'xbox ip': xbox_ip, 'data': [], 'error': '' }
-      console.log("xboxDATATATA", xboxdata[i])
-      let loldex = 0
-      //const url = `http://${xbox_ip}:9999/temperature`
-      for (var endpoint in xboxurls) {
-        console.log("endpoint", endpoint)
-        const endpint = xboxurls[endpoint]
-        const url = `http://${xbox_ip}:9999/${xboxurls[endpoint]}`
-        promises.push(axios.get(url).then(resp => {
-          console.log("xboxdata[ip]", xbox_ip)
-          let dat = { [endpint]: resp.data }
-          xboxdata[loldex].data.push(dat)
-
-        }).catch(err => {
-
-          let dat = { 'xbox ip': xbox_ip, 'data': "Could not reach Xbox" }
-          //xboxdata[loldex].error = "Could not reach Xbox"
-        }))
-      }
-
+      const sys = axios.get(`http://${xbox_ip}:9999/system`);
+      const syslink = axios.get(`http://${xbox_ip}:9999/systemlink`);
+      const smc = axios.get(`http://${xbox_ip}:9999/smc`);
+      const temp = axios.get(`http://${xbox_ip}:9999/temperature`);
+      const livecache = axios.get(`http://${xbox_ip}:9999/title/live/cache`);
+      const req_ = { 'xbox': xbox_ip, data: [] }
+      xboxdata.push({ 'xbox': xbox_ip, data: {} })
+      req_.data.push(sys)
+      req_.data.push(syslink)
+      req_.data.push(smc)
+      req_.data.push(temp)
+      req_.data.push(livecache)
+      promises.push(req_)
     }
+    Promise.all(promises.map(function (entity) {
+      return Promise.all(entity.data.map(function (item) {
+        return item;
+      }));
+    })).then(function (data) {
+      for (d in data) {
+        console.log(data[d])
+        for (l in data[d]){
+          var url = new URL(data[d][l].config.url)
+          var foundIndex = xboxdata.findIndex(x => x.xbox == url.hostname);
+          console.log("PATHNAME!",url.pathname)
+          let formated_url = url.pathname.replace("/", "")
+          if(formated_url === "title/live/cache"){
+            formated_url = "live"
+          }
+          xboxdata[foundIndex].data[formated_url] = data[d][l].data
+        }
+      }
+      res.json(xboxdata)
+    }).catch(err => console.log(err));
   }
-  // else {
-  //   const xbox_ip = req.query.xbox
-  //   const url = `http://${xbox_ip}:9999/temperature`
-  //   promises.push(axios.get(url).then(resp => {
-  //     console.log(resp.data)
-  //     let dat = { 'xbox ip': xbox_ip, 'data': resp.data }
-  //     xboxdata.push(dat)
-  //   }).catch(err => {
-  //     let dat = { 'xbox ip': xbox_ip, 'data': "Could not reach Xbox" }
-  //     xboxdata.push(dat)
-  //   }))
-  // }
-
-  Promise.all(promises).then(responses => res.json(xboxdata))
 });
 app.get("/system", (req, res) => {
   console.log(req.query)
