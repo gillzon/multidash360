@@ -1,26 +1,39 @@
 import React from 'react'
-import { Flex, Box, Badge, Button, Text, Progress } from "@chakra-ui/react";
+import { Flex, Box, Badge, Button, Text, Progress, Image } from "@chakra-ui/react";
 function XboxBox(props) {
   console.log("PROPS.DATA", props.data)
+  function ValidateXboxModel(model) {
+    console.log("model", model)
+    if (model.toUpperCase() === 'TRINITY' || model.toUpperCase() === 'CORONA')
+      return <Image height="100px" src="/xboxslim.jpg" alt="image" />
+    else {
+      return <Image height="100px" src="/xboxphat.jpg" alt="image" />
+    }
+  }
   function GenereateXboxViews(data, index) {
     return (
       <div>
         <Box p="10px" borderStyle="solid" borderColor="black">
-          <Box>
-            <Badge borderRadius="full" px="5" colorScheme="teal" fontSize="2xl" >
-              Xbox Ip: {!data.system ? "Loading.." : data.systemlink.xboxip}
-            </Badge>
-          </Box>
-          <Box
-            color="gray.500"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            fontSize="l"
-            ml="2">
-            Serial: {!data.system ? "Loading.." : data.system.serial + " ID: " + data.system.consoleid}
-            <Text color="black" fontSize="10px">{!data.system.version ? "Loading.." : "Build Version:" + " " + data.system.version.build}</Text>
-            <Text color="black" fontSize="10px">{!data.system.console ? "Loading.." : "Motherboard:" + " " + data.system.console.motherboard}</Text>
-          </Box>
+          <Flex>
+            <Box>
+              <Badge borderRadius="full" px="5" colorScheme="teal" fontSize="2xl" >
+                Xbox Ip: {!data.system ? "Loading.." : data.systemlink.xboxip}
+              </Badge>
+              <Box
+                color="gray.500"
+                fontWeight="semibold"
+                letterSpacing="wide"
+                fontSize="l"
+                ml="2">
+                Serial: {!data.system ? "Loading.." : data.system.serial + " ID: " + data.system.consoleid}
+                <Text color="black" fontSize="10px">{!data.system.version ? "Loading.." : "Build Version:" + " " + data.system.version.build}</Text>
+                <Text color="black" fontSize="10px">{!data.system.console ? "Loading.." : "Motherboard:" + " " + data.system.console.motherboard}</Text>
+              </Box>
+            </Box>
+            <Box ml="2" textAlign="right" >
+              {!data.system.console ? "" : ValidateXboxModel(data.system.console.motherboard)}
+            </Box>
+          </Flex>
         </Box>
         <Box p="10px" borderStyle="solid" borderColor="black">
           <Box
@@ -59,7 +72,7 @@ function XboxBox(props) {
         <Box p="20px" borderStyle="solid" borderColor="black">
           <Button backgroundColor="red.400" color="white" size="md" onClick={(e) => props.RemoveXbox(index)}>Remove</Button>
         </Box>
-      </div>
+      </div >
     )
   }
   return (<> {props.data ? props.data.map((xbox, index) => {

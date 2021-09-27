@@ -7,10 +7,10 @@ export default function AppContent(props) {
     <div maxW="2023px">
       <EditXbox AddXbox={props.AddXbox} validateIp={props.validateIp} />
       {props.data[0] ? <><XboxBox data={props.data} RemoveXbox={props.RemoveXbox} /></> : <Box textAlign="center"><Spinner
-        thickness="40px"
+        thickness="10px"
         speed="0.65s"
         emptyColor="gray.200"
-        color="blue.500"
+        color="green.500"
         size="xl"
       /></Box>}</div></>
   );
