@@ -11,7 +11,7 @@ function generateUrl(ips) {
   let xboxdata = []
   let promises = []
   let ip_array = []
-  const urlendpoints = ['system', 'systemlink', 'smc', 'temperature', 'title/live/cache', 'memory', 'systemlink/bandwidth']
+  const urlendpoints = ['system', 'profile', 'systemlink', 'smc', 'temperature', 'screencapture/meta/list', 'title/live/cache', 'memory', 'systemlink/bandwidth']
   if (!Array.isArray(ips)) {
     console.log("ifnot array", ips)
     ip_array.push(ips)
@@ -50,6 +50,10 @@ app.get("/v1/get_all_xbox", (req, res) => {
             let formated_url = errorurl.pathname.replace("/", "")
             if (formated_url === "title/live/cache") {
               formated_url = "live"
+
+            }
+            if (formated_url === "screencapture/meta/list") {
+              formated_url = "screenshots"
             }
             var foundIndex = xboxdata.findIndex(x => x.xbox == errorurl.hostname);
             xboxdata[foundIndex].data[formated_url] = { 'error': 'not able to reach xbox' }
@@ -60,6 +64,9 @@ app.get("/v1/get_all_xbox", (req, res) => {
             let formated_url = url.pathname.replace("/", "")
             if (formated_url === "title/live/cache") {
               formated_url = "live"
+            }
+            if (formated_url === "screencapture/meta/list") {
+              formated_url = "screenshots"
             }
             xboxdata[foundIndex].data[formated_url] = data[i].value[k].value.data
           }

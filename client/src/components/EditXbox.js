@@ -8,11 +8,11 @@ function EditXbox(props) {
 
     return (
         <div>
-            <Box p="20px" borderStyle="solid" borderColor="black">
+            <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black">
                 <Input size="md" color="black" placeholder="Ip address to xbox" name="ip" value={ip} onChange={(e) => setIp(e.target.value)} />
                 <Text m="2px" color="red.500">{props.validateIp}</Text>
             </Box>
-            <Box p="20px" borderStyle="solid" borderColor="black">
+            <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black" >
                 <Button backgroundColor="green" color="white" size="md" onClick={(e) => props.AddXbox(ip)} >
                     Add
                 </Button>
