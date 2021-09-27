@@ -10,6 +10,6 @@ COPY package*.json ./api/
 RUN cd api && npm install
 COPY server/index.js ./api/
 
-EXPOSE 3001
+EXPOSE 3600
 
 CMD ["node", "./api/index.js"]
