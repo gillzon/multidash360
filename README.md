@@ -14,5 +14,5 @@ Multi dashboard to get a holistic view of your SystemLink event. If you planning
 * Possible to integrate leaderboards from games(possible dependency to new feature in  aurora)
 
 ## How to run it ##
-Clone the repo and the run npm install in root folder. After that you need to run npm install in the client folder for react app(reactjs). Currenlty both backend and front end are inte the same project maybe split it to two projects in the future but right now it's pretty smal hobby project.
+Clone the repo and the run npm install in root folder. After that you need to run npm install in the client folder for react app(reactjs). Currently both backend and front end are inte the same project maybe split it to two projects in the future but right now it's pretty smal hobby project.
 
