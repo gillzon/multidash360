@@ -11,21 +11,33 @@ import {
 } from "react-router-dom";
 function App(props) {
   const [data, setData] = useState([])
+  const [validateIp, setValidateIp] = useState()
   const history = useHistory()
   const location = useLocation();
   const queryParams = new URLSearchParams(history.location.search);
+
+  function ValidateIPaddress(ipaddress) {
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+      return (true)
+    }
+    return (false)
+  }
   function AddXbox(ip) {
     console.log("ip")
-    queryParams.append("xbox", ip)
-    history.push({
-      pathname: '/',
-      search: queryParams.toString()
-    })
+    if (ValidateIPaddress(ip)) {
+      queryParams.append("xbox", ip)
+      history.push({
+        pathname: '/',
+        search: queryParams.toString()
+      })
+    }
+    else {
+      setValidateIp("Not a valid IP-address")
+    }
   }
   function RemoveXbox(index) {
     console.log("ip", index)
     let newData = [...data]
-    //newData[index].xbox
     let param = queryParams.getAll('xbox')
     let newParam = param.filter(xbox => xbox !== newData[index].xbox)
     for (let p in newParam) {
@@ -39,8 +51,6 @@ function App(props) {
     }
     newData.splice(index, 1);
     setData(newData)
-    // queryParams.getAll('xbox')
-    // console.log(queryParams)
     history.push({
       pathname: '/',
       search: newParam.join('').toString()
@@ -58,7 +68,7 @@ function App(props) {
     <Router>
       <Switch>
         <ChakraProvider>
-          <Route path="/" render={(props) => <DefaultLayout {...props} data={data} AddXbox={AddXbox} RemoveXbox={RemoveXbox} />} />
+          <Route path="/" render={(props) => <DefaultLayout {...props} data={data} validateIp={validateIp} AddXbox={AddXbox} RemoveXbox={RemoveXbox} />} />
         </ChakraProvider>
       </Switch>
     </Router>

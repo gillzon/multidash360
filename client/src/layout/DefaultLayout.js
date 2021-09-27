@@ -7,7 +7,7 @@ const DefaultLayout = (props) => {
   return (
     <div>
       <AppNav />
-      <AppContent data={props.data} AddXbox={props.AddXbox} RemoveXbox={props.RemoveXbox} />
+      <AppContent data={props.data} AddXbox={props.AddXbox} validateIp={props.validateIp} RemoveXbox={props.RemoveXbox} />
       <AppFooter />
     </div>
   )

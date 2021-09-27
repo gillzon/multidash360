@@ -17,10 +17,11 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { FaGithub } from 'react-icons/fa';
 
 const Links = ['Dashboard'];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+const NavLink = ({ children }) => (
   <Link
     px={2}
     py={1}
@@ -34,10 +35,8 @@ const NavLink = ({ children }: { children: ReactNode }) => (
     {children}
   </Link>
 );
-
 export default function AppNav() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
       <Box bg={useColorModeValue('#107c10', '#107c10')} px={4}>
@@ -50,7 +49,7 @@ export default function AppNav() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box color="white">Multidash360</Box>
+            <Box color="white">Multidash360 </Box>
             <HStack
               as={'nav'}
               spacing={4}
@@ -59,6 +58,9 @@ export default function AppNav() {
                 <NavLink key={link}>{link}</NavLink>
               ))}
             </HStack>
+          </HStack>
+          <HStack spacing={8} alignItems={'center'}>
+            <Box color="white"> <a target="_blank" href="https://github.com/gillzon/multidash360"><FaGithub /></a></Box>
           </HStack>
         </Flex>
         {isOpen ? (
