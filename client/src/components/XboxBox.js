@@ -58,6 +58,7 @@ function XboxBox(props) {
           </Box>
           <Box
             color="black"
+
             ml="2">
             <Text as="b">RAM:</Text> {!data.memory ? "Loading.." :
               "Total" + " " + data.memory.total / (1024 * 1024) + " Mb " +
@@ -66,7 +67,7 @@ function XboxBox(props) {
             <Progress value={data.memory.used / data.memory.total * 100} />
             {/* <Image w="100px" src="https://www.pngitem.com/pimgs/m/10-107213_xbox-360-slim-png-transparent-png.png" /> */}
           </Box>
-          <Box display="flex">
+          <Box display="flex" >
             <Box pt="5px"
               color="#2ca243"
               ml="2">
@@ -82,7 +83,7 @@ function XboxBox(props) {
           </Box>
 
         </Box>
-        <Box p="10px" borderStyle="solid" borderColor="black" >
+        <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black" >
           <Box color="black.400"
             fontWeight="semibold"
             fontSize="28px"
@@ -99,7 +100,7 @@ function XboxBox(props) {
             }) : "No Profiles"}
           </Box>
         </Box>
-        <Box p="10px" borderStyle="solid" borderColor="black" >
+        <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black" >
           <Box color="red.300"
             pr="20px"
             fontWeight="semibold"
@@ -113,7 +114,7 @@ function XboxBox(props) {
             }) : ""}
           </Box>
         </Box>
-        <Box p="20px" borderStyle="solid" borderColor="black">
+        <Box borderStyle="solid" borderColor="black" pl="15px" pt="5px" pr="10px" pb="5px">
           <Button backgroundColor="red.400" color="white" size="md" onClick={(e) => props.RemoveXbox(index)}>Remove</Button>
         </Box>
       </div >

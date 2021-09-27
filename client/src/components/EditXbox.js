@@ -3,9 +3,6 @@ import React, { useState } from 'react'
 import { Flex, Box, Badge, Input, Button, Text, Progress } from "@chakra-ui/react";
 function EditXbox(props) {
     const [ip, setIp] = useState()
-
-
-
     return (
         <div>
             <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black">
