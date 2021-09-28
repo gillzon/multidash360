@@ -3,7 +3,7 @@ Multi dashboard based on ReactJs and Express server to get a holistic view of yo
 
 Following are supported at this moment:
 * Running title/game
-* Singed in profiles
+* Signed in profiles
 * Temperature
 * Memory/Ram usage
 
