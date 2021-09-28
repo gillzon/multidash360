@@ -8,8 +8,11 @@ Multi dashboard based on ReactJs and Express server to get a holistic view of yo
 ## How to run it ##
 Clone the repo and the run npm install in root folder. After that you need to run npm install in the client folder for react app(reactjs). Currently both backend and front end are inte the same project maybe split it to two projects in the future but right now it's pretty smal hobby project.
 ## Docker ##
-Run with docker:
+Build with command:
+
 `sudo docker build -f Dockerfile -t multidash360:v0.1 .`
+
+Run a container:
 
 `sudo docker run -d -p 3600:3600 multidash360:v0.1`
 
