@@ -16,6 +16,13 @@ Run a container:
 
 `sudo docker run -d -p 3600:3600 multidash360:v0.1`
 
+## Architecture ##
+
+* Chackra Ui
+* Reactjs
+* Express Server
+* NodeJs
+
 ## Todo ##
 * Support for authentication
 * Add player info related to xbox
