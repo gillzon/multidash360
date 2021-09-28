@@ -10,6 +10,7 @@ Clone the repo and the run npm install in root folder. After that you need to ru
 ## Docker ##
 Run with docker:
 `sudo docker build -f Dockerfile -t multidash360:v0.1 .`
+
 `sudo docker run -d -p 3600:3600 multidash360:v0.1`
 
 ## Todo ##
