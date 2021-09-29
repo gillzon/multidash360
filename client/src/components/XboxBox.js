@@ -17,8 +17,17 @@ function XboxBox(props) {
   }
   function GenereateXboxViews(data, index) {
     return (
-      <div>
-        <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black" display={{ base: "block", md: "flex", lg: "flex" }}>
+      <Box
+        m="5px"
+        borderStyle="solid"
+        borderWidth="2px"
+        borderColor="blackAlpha.300">
+        <Box
+          pl="10px"
+          pt="5px"
+          pr="10px"
+          pb="5px"
+          display={{ base: "block", md: "flex", lg: "flex" }}>
           <Flex display={{ base: "block", md: "flex", lg: "flex" }}>
             <Box>
               <Box color="gray.500"
@@ -32,41 +41,27 @@ function XboxBox(props) {
                 color="black"
                 fontSize="15px"
                 ml="2">
-                <Text as="b">Serial:</Text> {!data.system ? "Loading.." : data.system.serial + " ID: " + data.system.consoleid}
-                <Text color="black" >{!data.system.version ? "Loading.." : "Build Version:" + " " + data.system.version.build}</Text>
-                <Text color="black" >{!data.system.console ? "Loading.." : "Motherboard:" + " " + data.system.console.motherboard}</Text>
+                <Box>
+                  <Text as="b">Serial:</Text> {!data.system ? "Loading.." : data.system.serial}
+                </Box>
+                <Box>
+                  <Text as="b">Id: </Text>{!data.system ? "Loading.." : data.system.serial}
+                </Box>
+                <Box>
+                  <Text color="black" as="b">Build Version: </Text>{!data.system.version ? "Loading.." : data.system.version.build}
+                </Box>
+                <Text color="black" as="b">Motherboard: </Text>{!data.system.console ? "Loading.." : data.system.console.motherboard}
               </Box>
             </Box>
+
             <Box textAlign="right" pl="20px">
               {!data.system.console ? "" : ValidateXboxModel(data.system.console.motherboard)}
             </Box>
+
           </Flex>
+
         </Box>
         <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black">
-          <Box
-            color="black"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            fontSize="l"
-            ml="2">
-            Temp: {!data.temperature ? "Loading.." :
-              "CPU" + " " + data.temperature.cpu + "°C " +
-              "GPU" + " " + data.temperature.gpu + "°C " +
-              "Memory" + " " + data.temperature.memory + "°C " +
-              "Case" + " " + data.temperature.case + "°C "
-            }
-          </Box>
-          <Box
-            color="black"
-
-            ml="2">
-            <Text as="b">RAM:</Text> {!data.memory ? "Loading.." :
-              "Total" + " " + data.memory.total / (1024 * 1024) + " Mb " +
-              "Used" + " " + data.memory.used / (1024 * 1024) + " Mb " +
-              "Free" + " " + data.memory.free / (1024 * 1024) + " Mb "}
-            <Progress value={data.memory.used / data.memory.total * 100} />
-            {/* <Image w="100px" src="https://www.pngitem.com/pimgs/m/10-107213_xbox-360-slim-png-transparent-png.png" /> */}
-          </Box>
           <Box display="flex" >
             <Box pt="5px"
               color="#2ca243"
@@ -81,21 +76,45 @@ function XboxBox(props) {
               <Text fontSize="28px"><b>Title Running:</b> </Text><a target="_blank" href={!data.systemlink.xboxip ? "Loading.." : "http://" + data.systemlink.xboxip + ":9999"}>{!data.live.error ? data.live.fulltitle : "Click here to trigger cache"}</a>
             </Box>
           </Box>
+          <Box
+            color="black"
+
+            fontSize="l"
+            ml="2">
+            <Text as="b">Temp:</Text>
+            <Text>{!data.temperature ? "Loading.." : data.temperature.cpu + "°C "}</Text>
+            <Progress colorScheme="red" mb="5px" value={data.temperature.cpu} />
+            <Text>{!data.temperature ? "Loading.." : data.temperature.gpu + "°C "}</Text>
+            <Progress colorScheme="yellow" mb="5px" value={data.temperature.gpu} />
+            <Text>{!data.temperature ? "Loading.." : data.temperature.memory + "°C "}</Text>
+            <Progress colorScheme="orange" mb="5px" value={data.temperature.memory} />
+          </Box>
+          <Box
+            color="black"
+            ml="2">
+            <Text as="b">RAM:</Text>
+            <Text>Used: {!data.memory ? "Loading.." : data.memory.used / (1024 * 1024) + " Mb "}</Text>
+            <Progress mb="5px" value={data.memory.used / data.memory.total * 100} />
+            <Text>Free: {!data.memory ? "Loading.." : data.memory.free / (1024 * 1024) + " Mb "}</Text>
+            <Progress colorScheme="green" color="green.300" value={data.memory.free / data.memory.total * 100} />
+            {/* <Image w="100px" src="https://www.pngitem.com/pimgs/m/10-107213_xbox-360-slim-png-transparent-png.png" /> */}
+          </Box>
 
         </Box>
         <Box pl="10px" pt="5px" pr="10px" pb="5px" borderStyle="solid" borderColor="black" >
           <Box color="black.400"
-            fontWeight="semibold"
-            fontSize="28px"
             display="flex"
             ml="2">
-            <FaUser /><Text>Profiles</Text></Box>
+            <FaUser size="20px" />
+            <Text size="10px"> Signed In</Text>
+          </Box>
           <Box color="black"
+            display="block"
             pr="20px"
             ml="2">
             {data.profile[0] ? data.profile.map(profile => {
               if (profile.signedin) {
-                return <><Text as="b">GamerTag:</Text> {profile.gamertag} <Text as="b">Achievements:</Text> {profile.gamerscore} G </>
+                return <><Box> {profile.gamertag} ({profile.gamerscore} G)</Box> </>
               }
             }) : "No Profiles"}
           </Box>
@@ -117,7 +136,7 @@ function XboxBox(props) {
         <Box borderStyle="solid" borderColor="black" pl="15px" pt="5px" pr="10px" pb="5px">
           <Button backgroundColor="red.400" color="white" size="md" onClick={(e) => props.RemoveXbox(index)}>Remove</Button>
         </Box>
-      </div >
+      </Box >
     )
   }
   return (<> {props.data ? props.data.map((xbox, index) => {

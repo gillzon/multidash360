@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ChakraProvider } from "@chakra-ui/react"
 import { Box, Container, Grid, GridItem } from "@chakra-ui/react"
 import DefaultLayout from './layout/DefaultLayout'
+import {test_data} from './data'
 import {
   BrowserRouter as Router,
   Switch,
@@ -60,7 +61,7 @@ function App(props) {
     console.log(queryParams.getAll('xbox'))
     fetch(`/v1/get_all_xbox${history.location.search}`).then((res) => res.json()).then((data) => setData(data));
     const interval = setInterval(() => {
-      fetch(`/v1/get_all_xbox${history.location.search}`).then((res) => res.json()).then((data) => setData(data))
+     fetch(`/v1/get_all_xbox${history.location.search}`).then((res) => res.json()).then((data) => setData(data))
     }, 5000)
     return () => clearInterval(interval);
   }, [location]);
