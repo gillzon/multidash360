@@ -2,9 +2,7 @@ import React from 'react'
 import { Flex, Box, Badge, Button, Text, Progress, Image } from "@chakra-ui/react";
 import { FaUser } from 'react-icons/fa';
 function XboxBox(props) {
-  console.log("PROPS.DATA", props.data)
   function ValidateXboxModel(model) {
-    console.log("model", model)
     if (model.toUpperCase() === 'TRINITY' || model.toUpperCase() === 'CORONA')
       return <Image height="100px" src="/xboxslim.jpg" alt="image" />
     else {
@@ -15,14 +13,24 @@ function XboxBox(props) {
     let url = `http://${xboxip}:9999/image/screencapture?uuid=${filename}`
     return <a style={{ 'paddingRight': '10px' }} target="_blank" href={url}><Image height="100px" src={url} alt="image" /></a>
   }
+  function GenerateIconsImage(data) {
+    if (data.live.fulltitle === "Aurora") {
+      return <Image src="/aurora.png" alt="box icon" width="90px" />
+    }
+    else {
+      return <> {data.live.images ? <Image src={data.live.images.icon} alt="box icon" /> : "No image"}</>
+    }
+
+  }
   function GenereateXboxViews(data, index) {
     return (
-      <Box
+      <Box key={index}
         m="5px"
         borderStyle="solid"
         borderWidth="2px"
         borderColor="blackAlpha.300">
         <Box
+        key={index}
           pl="10px"
           pt="5px"
           pr="10px"
@@ -66,7 +74,7 @@ function XboxBox(props) {
             <Box pt="5px"
               color="#2ca243"
               ml="2">
-              {data.live.images ? <Image src={data.live.images.icon} alt="box icon" /> : "No image"}
+              {GenerateIconsImage(data)}
             </Box>
             <Box
               color="black"
@@ -82,12 +90,14 @@ function XboxBox(props) {
             fontSize="l"
             ml="2">
             <Text as="b">Temp:</Text>
-            <Text>{!data.temperature ? "Loading.." : data.temperature.cpu + "°C "}</Text>
+            <Text>{!data.temperature ? "Loading.." : "CPU " + data.temperature.cpu + "°C "}</Text>
             <Progress colorScheme="red" mb="5px" value={data.temperature.cpu} />
-            <Text>{!data.temperature ? "Loading.." : data.temperature.gpu + "°C "}</Text>
+            <Text>{!data.temperature ? "Loading.." : "GPU " + data.temperature.gpu + "°C "}</Text>
             <Progress colorScheme="yellow" mb="5px" value={data.temperature.gpu} />
-            <Text>{!data.temperature ? "Loading.." : data.temperature.memory + "°C "}</Text>
+            <Text>{!data.temperature ? "Loading.." : "Memory " + data.temperature.memory + "°C "}</Text>
             <Progress colorScheme="orange" mb="5px" value={data.temperature.memory} />
+            <Text>{!data.temperature ? "Loading.." : "Case " + data.temperature.case + "°C "}</Text>
+            <Progress colorScheme="pink" mb="5px" value={data.temperature.case} />
           </Box>
           <Box
             color="black"
@@ -128,7 +138,6 @@ function XboxBox(props) {
             display="flex"
             ml="2">
             {data.screenshots[0] ? data.screenshots.map(img => {
-              console.log("img", img)
               return GenerateScreenshots(img.filename, data.systemlink.xboxip)
             }) : ""}
           </Box>

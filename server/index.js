@@ -15,14 +15,12 @@ function generateUrl(ips) {
   let ip_array = []
   const urlendpoints = ['system', 'profile', 'systemlink', 'smc', 'temperature', 'screencapture/meta/list', 'title/live/cache', 'memory', 'systemlink/bandwidth']
   if (!Array.isArray(ips)) {
-    console.log("ifnot array", ips)
     ip_array.push(ips)
   }
   else {
     ip_array = ips
   }
   for (var i = 0, l = ip_array.length; i < l; i++) {
-    console.log("IPS", ip_array[i], i)
     const xbox_ip = ip_array[i]
     const urls = { 'xbox': xbox_ip, data: [] }
     for (var e = 0, a = urlendpoints.length; e < a; e++) {
@@ -38,7 +36,6 @@ app.get("/v1/get_all_xbox", (req, res) => {
   let xboxdata = []
   if (xboxips !== undefined) {
     let promises = generateUrl(xboxips)
-    console.log("prmises", promises)
     xboxdata = promises[1]
     Promise.allSettled(promises[0].map(function (entity) {
       return Promise.allSettled(entity.data.map(function (item) {

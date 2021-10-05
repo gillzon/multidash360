@@ -24,7 +24,6 @@ function App(props) {
     return (false)
   }
   function AddXbox(ip) {
-    console.log("ip")
     if (ValidateIPaddress(ip)) {
       queryParams.append("xbox", ip)
       history.push({
@@ -37,7 +36,6 @@ function App(props) {
     }
   }
   function RemoveXbox(index) {
-    console.log("ip", index)
     let newData = [...data]
     let param = queryParams.getAll('xbox')
     let newParam = param.filter(xbox => xbox !== newData[index].xbox)
@@ -48,7 +46,6 @@ function App(props) {
       else {
         newParam[p] = "&xbox=" + newParam[p]
       }
-      console.log(newParam[p])
     }
     newData.splice(index, 1);
     setData(newData)
@@ -58,7 +55,10 @@ function App(props) {
     })
   }
   useEffect(() => {
-    console.log(queryParams.getAll('xbox'))
+    // console.log(queryParams.getAll('xbox'))
+    // for (var i = 0, l = queryParams.getAll('xbox').length; i < l; i++) {
+    //   console.log("hejsan", queryParams.getAll('xbox')[i], l)
+    // }
     fetch(`/v1/get_all_xbox${history.location.search}`).then((res) => res.json()).then((data) => setData(data));
     const interval = setInterval(() => {
      fetch(`/v1/get_all_xbox${history.location.search}`).then((res) => res.json()).then((data) => setData(data))
